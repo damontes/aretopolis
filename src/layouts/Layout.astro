@@ -1,0 +1,76 @@
+---
+import Header from '@components/Header.astro'
+
+interface Props {
+  title: string
+  description?: string
+}
+
+const {
+  title,
+  description = 'Lead, plataforma de liderzago de alto desempeño'
+} = Astro.props
+---
+
+<!doctype html>
+<html lang='es'>
+  <head>
+    <title>{title}</title>
+    <meta charset='UTF-8' />
+    <meta name='description' content={description} />
+    <meta name='viewport' content='width=device-width' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+  </head>
+  <body>
+    <Header />
+    <slot />
+  </body>
+</html>
+<style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('/fonts/PlusJakartaSans.woff2') format('woff2');
+    font-style: swap;
+  }
+
+  html {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    text-wrap-style: pretty;
+    background-color: #f7f5f2;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  input[type='radio'] {
+    @apply appearance-none h-4 w-4 border border-gray-300 rounded-full checked:bg-black focus:outline-none focus:ring-[2px] focus:ring-offset-1 focus:ring-black relative;
+  }
+
+  input[type='radio']::before {
+    content: '';
+    display: block;
+    width: 40%;
+    height: 40%;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: background-color 0.2s;
+    position: absolute;
+    @apply top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2;
+  }
+
+  input[type='radio']:checked::before {
+    background-color: white;
+  }
+
+  input[type='radio']:checked:focus,
+  input[type='radio']:checked:hover {
+    background-color: black;
+  }
+</style>

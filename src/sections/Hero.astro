@@ -1,0 +1,33 @@
+---
+import SectionContainer from '@components/SectionContainer.astro'
+import Button from '@components/Dynamic/Button'
+---
+
+<SectionContainer>
+  <div
+    class='flex flex-col gap-6 px-4 py-10 md:gap-8 lg:items-center lg:flex-row'
+  >
+    <img
+      class='w-full aspect-video object-cover rounded-xl h-auto lg:w-[400px]'
+      src='/images/test_liderazgo.webp'
+    />
+    <div class='flex flex-col gap-6 md:gap-8 lg:justify-center flex-1'>
+      <div class='w-full flex flex-col gap-2 text-left'>
+        <h1
+          class='text-neutral-800 text-4xl font-black leading-tight md:text-5xl md:font-black tracking-tight'
+        >
+          Test de liderazgo
+        </h1>
+        <h2
+          class='text-[#1b150e] text-sm font-normal leading-normal md:text-base md:font-normal md:leading-normal'
+        >
+          Conocer tus cualidades de liderazgo y lo que te falta por desarrollar
+          es indispensable para que alcances la excelencia.
+        </h2>
+      </div>
+      <Button variant='primary' as='a' href='/test_liderazgo' full={false}>
+        Empezar
+      </Button>
+    </div>
+  </div>
+</SectionContainer>

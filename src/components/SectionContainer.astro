@@ -1,0 +1,9 @@
+---
+import { cn } from "@helpers/utils";
+
+const { className } = Astro.props;
+---
+
+<section class={cn("flex flex-col max-w-screen-lg mx-auto", className)}>
+  <slot />
+</section>

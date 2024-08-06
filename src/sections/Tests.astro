@@ -1,0 +1,37 @@
+---
+import Button from '@components/Dynamic/Button'
+import SectionContainer from '@components/SectionContainer.astro'
+---
+
+<SectionContainer className='w-full flex-1'>
+  <h2
+    class='text-[#1b150e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5'
+  >
+    Explora nuestros test
+  </h2>
+  <div class='p-4'>
+    <div
+      class='flex items-stretch justify-between gap-4 rounded-xl bg-[#f8f5f2] p-4 shadow-[0_0_4px_rgba(0,0,0,0.1)]'
+    >
+      <div class='flex flex-[2_2_0px] flex-col gap-4'>
+        <div class='flex flex-col gap-1'>
+          <p class='text-[#1b150e] text-base font-bold leading-tight'>
+            Caracterograma
+          </p>
+          <p class='text-[#93754d] text-sm font-normal leading-normal'>
+            Despierta a tu líder interior y alcanza la excelencia mediante este
+            test basado en la metáfora del Ferrari.
+          </p>
+        </div>
+        <Button variant='secondary' href='/caracterograma' as='a' full={false}>
+          Explorar
+        </Button>
+      </div>
+      <div
+        class='w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1'
+        style='background-image: url("https://cdn.usegalileo.ai/sdxl10/49f406d9-cefc-475c-a0f5-6dc30488f5de.png");'
+      >
+      </div>
+    </div>
+  </div>
+</SectionContainer>
