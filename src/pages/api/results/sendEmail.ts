@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro'
 import { Resend } from 'resend'
 import { renderToHtml } from 'src/lib/renderToHtml'
-import puppeteer from 'puppeteer'
 import { TestType } from '@contants/*'
+import chromium from 'chrome-aws-lambda'
+import puppeteer from 'puppeteer-core'
 
 const resendKey = import.meta.env.RESEND_API_KEY
 const resend = new Resend(resendKey)
@@ -44,7 +45,12 @@ export const POST: APIRoute = async ({ request }) => {
 }
 
 async function generatePdf(htmlContent: string) {
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless
+  })
   const page = await browser.newPage()
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' })
 
@@ -55,5 +61,5 @@ async function generatePdf(htmlContent: string) {
 
   await browser.close()
 
-  return pdfBuffer
+  return Buffer.from(pdfBuffer)
 }
