@@ -18,6 +18,12 @@ function getLeadershipResults(
   const totalExpectedAnswers = EXPECTED_ANSWERS[test]
   const totalQuestions = QUESTIONS[test]
 
+  console.log('GET LEADERSHIP RESULTS', {
+    totalExpectedAnswers,
+    answers,
+    test,
+    partial
+  })
   const answersBySection = groupBy(totalQuestions, (item) => item.section)
 
   return Object.entries(answersBySection).map(([section, questions]) => {

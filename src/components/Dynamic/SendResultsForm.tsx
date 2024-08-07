@@ -26,8 +26,8 @@ const SendResultsForm = () => {
 
     alert('Resultados enviados correctamente')
 
-    window.location.href = '/'
-    removeLocalStorage(`${TestType.LIDERAZGO}:answers`)
+    // window.location.href = '/'
+    // removeLocalStorage(`${TestType.LIDERAZGO}:answers`)
   }
 
   return (

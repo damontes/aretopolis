@@ -1,0 +1,47 @@
+{
+	"version": 3,
+	"routes": [
+		{
+			"src": "^/_astro/(.*)$",
+			"headers": {
+				"cache-control": "public, max-age=31536000, immutable"
+			},
+			"continue": true
+		},
+		{
+			"handle": "filesystem"
+		},
+		{
+			"src": "^\\/_image$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/results\\/sendEmail\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/results\\/([^/]+?)\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/caracterograma\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/test_liderazgo\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/tests\\/caracterograma\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/tests\\/test_liderazgo\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/$",
+			"dest": "_render"
+		}
+	]
+}

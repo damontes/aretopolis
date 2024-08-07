@@ -1,0 +1,16 @@
+---
+import Layout from '@layouts/Layout.astro'
+import LeadershipTest from '@components/Tests/LeadershipTest'
+import Dialog from '@components/Dialog.astro'
+import { DIALOGS } from '@contants/*'
+import SendResultsForm from '@components/Dynamic/SendResultsForm'
+---
+
+<Layout title='Test liderazgo' description='Test de liderazgo'>
+  <section class='w-full max-w-screen-md mx-auto py-10'>
+    <LeadershipTest client:only />
+  </section>
+  <Dialog id={DIALOGS.paymentForm}>
+    <SendResultsForm client:only />
+  </Dialog>
+</Layout>
