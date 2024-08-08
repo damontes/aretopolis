@@ -6,6 +6,7 @@ specifiers:
   '@astrojs/react': ^3.6.1
   '@astrojs/tailwind': ^5.1.0
   '@astrojs/vercel': ^7.7.2
+  '@sparticuz/chromium': ^126.0.0
   '@tailwindcss/forms': ^0.5.7
   '@types/react': ^18.3.3
   '@types/react-dom': ^18.3.0
@@ -25,6 +26,7 @@ dependencies:
   '@astrojs/react': 3.6.1_ma437sazqanxqsgjws34kond6i
   '@astrojs/tailwind': 5.1.0_s6zf43o7v6all5gs65czovclxy
   '@astrojs/vercel': 7.7.2_astro@4.13.1+react@18.3.1
+  '@sparticuz/chromium': 126.0.0
   '@tailwindcss/forms': 0.5.7_tailwindcss@3.4.8
   astro: 4.13.1_typescript@5.5.4
   clsx: 2.1.1
@@ -1206,6 +1208,16 @@ packages:
     resolution: {integrity: sha512-biCz/mnkMktImI6hMfMX3H9kOeqsInxWEyCHbSlL8C/2TR1FqfmGxTLRNwYCKsyCyxWLbB8rEqXRVZuyxuLFmA==}
     dependencies:
       '@types/hast': 3.0.4
+    dev: false
+
+  /@sparticuz/chromium/126.0.0:
+    resolution: {integrity: sha512-qqGQmZQj3y0/V2osKswRHbzK4Qe80YHSDnpt6ac51hsY1bMDinMS9Q+eEmcL+re2MEhYN+ykoV9BY8Dyw1Lyjg==}
+    engines: {node: '>= 16'}
+    dependencies:
+      follow-redirects: 1.15.6
+      tar-fs: 3.0.6
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@tailwindcss/forms/0.5.7_tailwindcss@3.4.8:
@@ -2503,6 +2515,16 @@ packages:
   /flattie/1.1.1:
     resolution: {integrity: sha512-9UbaD6XdAL97+k/n+N7JwX46K/M6Zc6KcFYskrYL8wbBV/Uyk0CTAMY0VT+qiK5PM7AIc9aTWYtq65U7T+aCNQ==}
     engines: {node: '>=8'}
+    dev: false
+
+  /follow-redirects/1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
     dev: false
 
   /foreground-child/3.3.0:
