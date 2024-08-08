@@ -1,12 +1,15 @@
 import type { APIRoute } from 'astro'
 import { Resend } from 'resend'
 import { renderToHtml } from 'src/lib/renderToHtml'
-import puppeteer from 'puppeteer-core'
+import puppeteer, { Browser } from 'puppeteer'
 import chromium from '@sparticuz/chromium'
 import { TestType } from '@contants/*'
 
 const resendKey = import.meta.env.RESEND_API_KEY
 const resend = new Resend(resendKey)
+
+let browser: Browser
+const isLocal = process.env.NODE_ENV === 'development'
 
 export const POST: APIRoute = async ({ request }) => {
   const data = await request.formData()
@@ -45,12 +48,14 @@ export const POST: APIRoute = async ({ request }) => {
 }
 
 async function generatePdf(htmlContent: string) {
-  const browser = await await puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath(),
-    headless: chromium.headless
-  })
+  await startBrowser()
+
+  // const browser = await await puppeteer.launch({
+  //   args: chromium.args,
+  //   defaultViewport: chromium.defaultViewport,
+  //   executablePath: await chromium.executablePath(),
+  //   headless: chromium.headless
+  // })
 
   const page = await browser.newPage()
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' })
@@ -63,4 +68,33 @@ async function generatePdf(htmlContent: string) {
   await browser.close()
 
   return Buffer.from(pdfBuffer)
+}
+
+async function startBrowser() {
+  const chromeArgs = [
+    '--font-render-hinting=none', // Improves font-rendering quality and spacing
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-gpu',
+    '--disable-dev-shm-usage',
+    '--disable-accelerated-2d-canvas',
+    '--disable-animations',
+    '--disable-background-timer-throttling',
+    '--disable-restore-session-state',
+    '--disable-web-security', // Only if necessary, be cautious with security implications
+    '--single-process' // Be cautious as this can affect stability in some environments
+  ]
+
+  if (!browser?.connected) {
+    browser = await puppeteer.launch({
+      ...(isLocal
+        ? { channel: 'chrome' }
+        : {
+            args: chromeArgs,
+            executablePath: await chromium.executablePath(),
+            ignoreHTTPSErrors: true,
+            headless: true
+          })
+    })
+  }
 }
