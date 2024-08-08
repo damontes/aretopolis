@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro'
 import { Resend } from 'resend'
 import { renderToHtml } from 'src/lib/renderToHtml'
 import puppeteer, { Browser } from 'puppeteer'
-// import chromium from '@sparticuz/chromium'
+import chromium from '@sparticuz/chromium'
 import { TestType } from '@contants/*'
 
 const resendKey = import.meta.env.RESEND_API_KEY
@@ -50,6 +50,13 @@ export const POST: APIRoute = async ({ request }) => {
 async function generatePdf(htmlContent: string) {
   await startBrowser()
 
+  // const browser = await await puppeteer.launch({
+  //   args: chromium.args,
+  //   defaultViewport: chromium.defaultViewport,
+  //   executablePath: await chromium.executablePath(),
+  //   headless: chromium.headless
+  // })
+
   const page = await browser.newPage()
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' })
 
@@ -84,7 +91,9 @@ async function startBrowser() {
         ? { channel: 'chrome' }
         : {
             args: chromeArgs,
-            // executablePath: await chromium.executablePath(),
+            executablePath: await chromium.executablePath(
+              `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
+            ),
             ignoreHTTPSErrors: true,
             headless: true
           })
