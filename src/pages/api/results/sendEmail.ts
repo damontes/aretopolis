@@ -50,13 +50,6 @@ export const POST: APIRoute = async ({ request }) => {
 async function generatePdf(htmlContent: string) {
   await startBrowser()
 
-  // const browser = await await puppeteer.launch({
-  //   args: chromium.args,
-  //   defaultViewport: chromium.defaultViewport,
-  //   executablePath: await chromium.executablePath(),
-  //   headless: chromium.headless
-  // })
-
   const page = await browser.newPage()
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' })
 
