@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro'
 import { Resend } from 'resend'
 import { renderToHtml } from 'src/lib/renderToHtml'
 import puppeteer, { Browser } from 'puppeteer'
-import chromium from '@sparticuz/chromium'
+// import chromium from '@sparticuz/chromium'
 import { TestType } from '@contants/*'
 
 const resendKey = import.meta.env.RESEND_API_KEY
@@ -91,7 +91,7 @@ async function startBrowser() {
         ? { channel: 'chrome' }
         : {
             args: chromeArgs,
-            executablePath: await chromium.executablePath(),
+            // executablePath: await chromium.executablePath(),
             ignoreHTTPSErrors: true,
             headless: true
           })
