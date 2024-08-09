@@ -85,9 +85,7 @@ async function startBrowser(url: string) {
         ? { channel: 'chrome' }
         : {
             args: chromeArgs,
-            executablePath: await chromium.executablePath(
-              `${url}/chromium.tar`
-            ),
+            executablePath: await chromium.executablePath(),
             ignoreHTTPSErrors: true,
             headless: true
           })
