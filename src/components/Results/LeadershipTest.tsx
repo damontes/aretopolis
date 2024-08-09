@@ -16,10 +16,11 @@ export type LeadershipResultsItems = Array<{
 interface ResultsLiderazgoProps {
   results: LeadershipResultsItems
   htmlTemplate?: boolean
+  isPaid?: boolean
 }
 
 const LeadershipResults = (props: ResultsLiderazgoProps) => {
-  const { results, htmlTemplate = false } = props
+  const { results, isPaid = false, htmlTemplate = false } = props
 
   const recommendationsByArea = results.reduce((acc, result) => {
     return { ...acc, ...result.recommendationsByArea }
@@ -31,8 +32,20 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
     ) as HTMLDialogElement
     dialog?.showModal()
   }
+
+  const handleSendResults = () => {
+    const dialog = document.getElementById(
+      DIALOGS.sendResultsForm
+    ) as HTMLDialogElement
+
+    dialog?.showModal()
+  }
+
   return (
-    <div className='relative max-w-screen-md mx-auto py-10 px-4'>
+    <div
+      id='leadership-results'
+      className='relative max-w-screen-lg mx-auto py-10 px-4'
+    >
       <h1 className='text-4xl font-bold'>Tus fortalezas de liderazgo</h1>
       <p className='font-light text-md my-2 text-gray-600'>
         Terminaste el test de liderazgo LEAD. Estos son tus resultados en
@@ -43,8 +56,8 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
         <h2 className='text-xl font-bold'>Tus fortalezas para construir</h2>
         <div
           className={cn('grid gap-2', {
-            'grid-cols-1 md:grid-cols-2': !htmlTemplate,
-            'grid-cols-2': htmlTemplate
+            'grid-cols-2': htmlTemplate,
+            'grid-cols-1 md:grid-cols-2': !htmlTemplate
           })}
         >
           {results
@@ -107,7 +120,7 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
         className={cn(
           'h-40 absolute inset-0 mt-auto top-0 flex justify-center items-center bg-gradient-to-t from-[#f7f5f2] from-40% to-100% to-transparent',
           {
-            hidden: htmlTemplate
+            hidden: isPaid || htmlTemplate
           }
         )}
       >
@@ -115,6 +128,13 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
           Ver más
         </Button>
       </footer>
+      {isPaid && (
+        <div className='flex justify-center'>
+          <Button className='max-w-xs' onClick={handleSendResults}>
+            Enviar resultados
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

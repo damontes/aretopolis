@@ -1,40 +1,53 @@
 import { getLocalStorage, removeLocalStorage } from '@helpers/localStorage'
 import Button from './Button'
 import Input from './Input'
-import { TestType } from '@contants/*'
+import { TEST_RESULT, TestType } from '@contants/*'
 import { useState } from 'react'
 
-const SendResultsForm = () => {
+interface Props {
+  initialValues: {
+    email: string
+  }
+}
+
+const SendResultsForm = ({ initialValues }: Props) => {
   const answers = getLocalStorage(`${TestType.LIDERAZGO}:answers`)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    const element = document.getElementById(TEST_RESULT.leadership)
+    if (!element) return
     setLoading(true)
+    const formData = new FormData(e.target)
 
-    const formData = new FormData(e.target as HTMLFormElement)
-    const result = await fetch('/api/results/sendEmail', {
+    formData.set('results', JSON.stringify(answers))
+
+    const rawResponse = await fetch('/api/results/sendEmail', {
       method: 'POST',
       body: formData
     })
 
-    if (!result.ok) {
-      alert(`Error al enviar los resultados ${result.statusText}`)
-      setLoading(false)
+    if (!rawResponse.ok) {
+      console.error('Error submitting answers', rawResponse.statusText)
       return
     }
-
+    setLoading(false)
     alert('Resultados enviados correctamente')
-
-    // window.location.href = '/'
-    // removeLocalStorage(`${TestType.LIDERAZGO}:answers`)
+    window.location.href = '/'
+    removeLocalStorage(`${TestType.LIDERAZGO}:answers`)
   }
 
   return (
     <form onSubmit={handleSubmit} className='px-8 py-6'>
       <div className='flex flex-col gap-4'>
-        <Input label='Nombre *' type='text' name='name' required />
-        <Input label='Correo Electronico *' type='text' name='email' required />
+        <Input
+          label='Correo Electronico *'
+          type='text'
+          name='email'
+          required
+          defaultValue={initialValues.email}
+        />
         <input
           type='hidden'
           name='results'
@@ -42,7 +55,7 @@ const SendResultsForm = () => {
         />
       </div>
       <div className='mt-10'>
-        <Button disabled={loading}>
+        <Button type='submit' disabled={loading}>
           {loading ? 'Enviando' : 'Enviar resultados'}
         </Button>
       </div>

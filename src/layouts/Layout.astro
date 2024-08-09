@@ -73,4 +73,38 @@ const {
   input[type='radio']:checked:hover {
     background-color: black;
   }
+
+  dialog::backdrop {
+    backdrop-filter: blur(4px);
+  }
 </style>
+
+<script>
+  const dialogs = document.getElementsByTagName('dialog')
+
+  Array.from(dialogs).forEach((dialog) => {
+    const buttonDialog = document.getElementById(`${dialog.id}-close-button`)
+
+    const isOpen = dialog.getAttribute('data-open') === 'true'
+
+    if (isOpen) {
+      dialog.showModal()
+    }
+
+    buttonDialog?.addEventListener('click', function () {
+      dialog.close()
+    })
+
+    dialog?.addEventListener('click', function (event) {
+      const rect = dialog.getBoundingClientRect()
+      const isInDialog =
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width
+      if (!isInDialog) {
+        dialog.close()
+      }
+    })
+  })
+</script>

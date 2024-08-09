@@ -44,5 +44,11 @@ export const AREAS = {
 }
 
 export const DIALOGS = {
-  paymentForm: 'paymentForm'
+  sendResultsForm: 'sendResultsForm',
+  paymentForm: 'paymentForm',
+  paymentSuccess: 'paymentSuccess'
+}
+
+export const TEST_RESULT = {
+  leadership: 'leadership-results'
 }
