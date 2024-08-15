@@ -43,7 +43,8 @@ export const POST: APIRoute = async ({ request }) => {
   return new Response(JSON.stringify({ message: 'ok' }), {
     status: 200,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Set-Cookie': `session_id=; Max-Age=0; Path=/`
     }
   })
 }

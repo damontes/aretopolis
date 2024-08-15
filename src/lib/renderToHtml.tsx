@@ -15,7 +15,7 @@ export const renderToHtml = (answers: Answer[]) => {
         <script src='https://cdn.tailwindcss.com' />
       </head>
       <body>
-        <LeadershipResults results={results} htmlTemplate />
+        <LeadershipResults results={results} htmlTemplate isPaid />
       </body>
     </html>
   )

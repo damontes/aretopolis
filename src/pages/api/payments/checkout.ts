@@ -25,6 +25,7 @@ export const POST: APIRoute = async ({ request }) => {
       metadata: {
         customer_name: name
       },
+      allow_promotion_codes: true,
       success_url: `${url.origin}${callback_path}?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${url.origin}${callback_path}?canceled=true`
     })

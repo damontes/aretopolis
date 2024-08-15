@@ -1,7 +1,8 @@
 import Button from '@components/Dynamic/Button'
 import CircularProgress from '@components/Dynamic/CircularProgress'
+import PercentageBar from '@components/Dynamic/PercentageBar'
 import { cn } from '@helpers/utils'
-import { AREAS, DIALOGS, SECTIONS } from 'src/constants'
+import { AREAS, AREAS_RECOMMENDATIONS, DIALOGS, SECTIONS } from 'src/constants'
 
 export type LeadershipResultsItems = Array<{
   section: number
@@ -14,17 +15,13 @@ export type LeadershipResultsItems = Array<{
 }>
 
 interface ResultsLiderazgoProps {
-  results: LeadershipResultsItems
+  results: LeadershipResultsItems | Record<number, number>
   htmlTemplate?: boolean
   isPaid?: boolean
 }
 
 const LeadershipResults = (props: ResultsLiderazgoProps) => {
   const { results, isPaid = false, htmlTemplate = false } = props
-
-  const recommendationsByArea = results.reduce((acc, result) => {
-    return { ...acc, ...result.recommendationsByArea }
-  }, {})
 
   const handlePaymentDialogForm = () => {
     const dialog = document.getElementById(
@@ -40,6 +37,68 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
 
     dialog?.showModal()
   }
+
+  if (!isPaid) {
+    return (
+      <div
+        id='leadership-results'
+        className='relative max-w-screen-lg mx-auto py-10 px-4'
+      >
+        <h1 className='text-4xl font-bold'>
+          Felicidades, Terminaste el test de liderazgo LEAD.
+        </h1>
+        <p className='font-light text-md my-2 text-gray-600'>
+          Estos son tus resultados en porcentajes de 0 a 100%, según tu grado de
+          desarrollo para cada competencia.
+        </p>
+        <ul className='flex flex-col gap-2 list-none mt-4'>
+          {Object.entries(results)
+            .sort((a, b) => b.at(-1) - a.at(-1))
+            .map(([area, count], index) => {
+              const title = AREAS[Number(area) as keyof typeof AREAS]
+              return (
+                <li
+                  className='p-2 flex-col sm:flex-row flex sm:items-center gap-x-6'
+                  key={index}
+                >
+                  <h3 className='text-sm font-semibold min-w-72'>{title}</h3>
+                  <div className='flex-1'>
+                    <PercentageBar percentage={(count as number) / 10} />
+                  </div>
+                </li>
+              )
+            })}
+        </ul>
+        <div className=''>
+          <div className='px-6 py-24 sm:px-6 sm:py-32 lg:px-8'>
+            <div className='mx-auto max-w-3xl text-center'>
+              <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+                ¿Deseas desarrollar las áreas de oportunidad que reflejan tus
+                resultados?
+                <br />
+              </h2>
+              <p className='mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600'>
+                Obtén un diagnóstico con disciplinas recomendadas para
+                fortalecer tu liderazgo.
+              </p>
+              <div className='mt-10 flex items-center justify-center gap-x-6'>
+                <Button className='max-w-xs' onClick={handlePaymentDialogForm}>
+                  Obtener
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const recommendationsByArea = (results as LeadershipResultsItems).reduce(
+    (acc, result) => {
+      return { ...acc, ...result.recommendationsByArea }
+    },
+    {}
+  )
 
   return (
     <div
@@ -60,7 +119,7 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
             'grid-cols-1 md:grid-cols-2': !htmlTemplate
           })}
         >
-          {results
+          {(results as LeadershipResultsItems)
             .sort((a, b) => b.percentage - a.percentage)
             .map((result, index) => {
               const sectiontitle =
@@ -97,7 +156,8 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
         <ul className='flex flex-col gap-2 list-none'>
           {Object.entries(recommendationsByArea).map(
             ([area, recommendations], index) => {
-              const title = AREAS[Number(area) as keyof typeof AREAS]
+              const title =
+                AREAS_RECOMMENDATIONS[Number(area) as keyof typeof AREAS]
               return (
                 <li className='p-2' key={index}>
                   <h3 className='text-sm font-semibold'>{title}</h3>
@@ -116,19 +176,7 @@ const LeadershipResults = (props: ResultsLiderazgoProps) => {
           )}
         </ul>
       </section>
-      <footer
-        className={cn(
-          'h-40 absolute inset-0 mt-auto top-0 flex justify-center items-center bg-gradient-to-t from-[#f7f5f2] from-40% to-100% to-transparent',
-          {
-            hidden: isPaid || htmlTemplate
-          }
-        )}
-      >
-        <Button className='max-w-xs' onClick={handlePaymentDialogForm}>
-          Ver más
-        </Button>
-      </footer>
-      {isPaid && (
+      {!htmlTemplate && (
         <div className='flex justify-center'>
           <Button className='max-w-xs' onClick={handleSendResults}>
             Enviar resultados

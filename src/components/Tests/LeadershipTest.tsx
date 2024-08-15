@@ -95,8 +95,8 @@ const LeadershipTest = () => {
   }
 
   return (
-    <div className='w-full flex flex-col gap-3 mx-auto'>
-      <ProgressBar question={count} totalQuestions={total} />
+    <div className='w-full flex max-w-screen-md flex-col gap-3 mx-auto'>
+      <ProgressBar count={count} totalCount={total} />
       <h1 className='text-lg font-bold mt-8'>{question?.label}</h1>
       <RadioGroup
         value={answer?.value ?? ''}

@@ -43,7 +43,7 @@ const PaymentForm = () => {
         />
       </div>
       <div className='mt-10'>
-        <Button disabled={loading}>{loading ? 'Enviando' : 'Ver más'}</Button>
+        <Button disabled={loading}>{loading ? 'Enviando' : 'Continuar'}</Button>
       </div>
       <p className='text-center text-xs text-gray-400 mt-4'>
         Verifica que tus datos sean correctos antes de enviar tu solicitud.
