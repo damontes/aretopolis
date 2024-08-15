@@ -14,6 +14,7 @@ const PaymentForm = () => {
 
     const formData = new FormData(e.target as HTMLFormElement)
     formData.set('callback_path', window.location.pathname)
+    formData.set('product', TestType.LIDERAZGO)
 
     const result = await fetch('/api/payments/checkout', {
       method: 'POST',

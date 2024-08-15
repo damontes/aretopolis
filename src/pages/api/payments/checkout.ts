@@ -1,3 +1,4 @@
+import { TestType } from '@contants/*'
 import type { APIRoute } from 'astro'
 import Stripe from 'stripe'
 
@@ -10,13 +11,16 @@ export const POST: APIRoute = async ({ request }) => {
   const values = Object.fromEntries(data.entries()) as Record<string, string>
 
   const url = new URL(request.url)
-  const { email, name, callback_path } = values
+  const { email, name, callback_path, product } = values
+
+  const isDev = isDevelop(url.host)
+  const price = getPriceByEnviorment(isDev, product as TestType)
 
   try {
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          price: 'price_1Mr8azK595NprVkr7vlGQz04',
+          price,
           quantity: 1
         }
       ],
@@ -47,4 +51,20 @@ export const POST: APIRoute = async ({ request }) => {
       }
     })
   }
+}
+
+function getPriceByEnviorment(isDev: boolean, product: TestType) {
+  switch (product) {
+    case TestType.LIDERAZGO:
+      return isDev
+        ? 'price_1Mr8azK595NprVkr7vlGQz04'
+        : 'price_1PoB0PK595NprVkrXOlKs5hF'
+    default:
+      return ''
+  }
+}
+
+function isDevelop(host: string) {
+  if (host.startsWith('develop') || host.startsWith('localhost')) return true
+  return false
 }
