@@ -1,16 +1,16 @@
 interface ProgressBarProps {
-  question: number
-  totalQuestions: number
+  count: number
+  totalCount: number
 }
 
-const ProgressBar = ({ question, totalQuestions }: ProgressBarProps) => {
-  const percentage = (question / totalQuestions) * 100
+const ProgressBar = ({ count, totalCount }: ProgressBarProps) => {
+  const percentage = (count / totalCount) * 100
 
   return (
     <div>
       <h4 className='sr-only'>Status</h4>
       <p className='text-sm font-medium text-gray-900'>
-        Question {question} / {totalQuestions}
+        Question {count} / {totalCount}
       </p>
       <div aria-hidden='true' className='mt-4'>
         <div className='overflow-hidden rounded-full bg-gray-200'>

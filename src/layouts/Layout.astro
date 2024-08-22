@@ -10,16 +10,30 @@ const {
   title,
   description = 'Lead, plataforma de liderzago de alto desempeño'
 } = Astro.props
+
+const image = 'https://aretopolis.com/logo.png'
 ---
 
 <!doctype html>
 <html lang='es'>
   <head>
-    <title>{title}</title>
     <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+
     <meta name='description' content={description} />
-    <meta name='viewport' content='width=device-width' />
+    <meta name='keywords' content='aditivos, plastico, colores, pellet' />
+    <meta name='og:image' content={image} />
+    <meta name='og:title' content={title} />
+    <meta name='og:description' content={description} />
+    <meta name='og:url' content='https://aretopolis.com' />
+    <meta name='og:site_name' content='Aretopolis' />
+    <meta name='og:type' content='website' />
+    <meta name='og:locale' content='es_ES' />
+
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <link rel='canonical' href='https://aretopolis.com' />
+
+    <title>{title}</title>
   </head>
   <body>
     <Header />
@@ -73,4 +87,38 @@ const {
   input[type='radio']:checked:hover {
     background-color: black;
   }
+
+  dialog::backdrop {
+    backdrop-filter: blur(4px);
+  }
 </style>
+
+<script>
+  const dialogs = document.getElementsByTagName('dialog')
+
+  Array.from(dialogs).forEach((dialog) => {
+    const buttonDialog = document.getElementById(`${dialog.id}-close-button`)
+
+    const isOpen = dialog.getAttribute('data-open') === 'true'
+
+    if (isOpen) {
+      dialog.showModal()
+    }
+
+    buttonDialog?.addEventListener('click', function () {
+      dialog.close()
+    })
+
+    dialog?.addEventListener('click', function (event) {
+      const rect = dialog.getBoundingClientRect()
+      const isInDialog =
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width
+      if (!isInDialog) {
+        dialog.close()
+      }
+    })
+  })
+</script>

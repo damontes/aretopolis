@@ -17,7 +17,7 @@ export const SECTIONS = {
   4: 'TRABAJO EN EQUIPO'
 }
 
-export const AREAS = {
+export const AREAS_RECOMMENDATIONS = {
   1: 'Para mejorar tus habilidades sociales',
   2: 'Para controlar el estrés',
   3: 'Para ser más resiliente',
@@ -43,6 +43,38 @@ export const AREAS = {
   20: 'Para ser coach de tu equipo'
 }
 
+export const AREAS = {
+  1: 'Habilidades sociales',
+  2: 'Control del estrés',
+  3: 'Resiliencia',
+  4: 'Inteligencia emocional',
+  5: 'Salud',
+
+  6: 'Toma de decisiones',
+  7: 'Gestión del tiempo',
+  8: 'Gestión de proyectos',
+  9: 'Negociación',
+  10: 'Dirección de ventas',
+
+  11: 'Autoridad',
+  12: 'Empoderamiento',
+  13: 'Espíritu emprendedor',
+  14: 'Comunicación',
+  15: 'Valores',
+
+  16: 'Gestión de juntas',
+  17: 'Presentaciones',
+  18: 'Resolución de conflictos',
+  19: 'Gestión del talento',
+  20: 'Coaching'
+}
+
 export const DIALOGS = {
-  paymentForm: 'paymentForm'
+  sendResultsForm: 'sendResultsForm',
+  paymentForm: 'paymentForm',
+  paymentSuccess: 'paymentSuccess'
+}
+
+export const TEST_RESULT = {
+  leadership: 'leadership-results'
 }

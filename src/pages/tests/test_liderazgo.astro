@@ -1,16 +1,31 @@
 ---
 import Layout from '@layouts/Layout.astro'
 import LeadershipTest from '@components/Tests/LeadershipTest'
-import Dialog from '@components/Dialog.astro'
 import { DIALOGS } from '@contants/*'
-import SendResultsForm from '@components/Dynamic/SendResultsForm'
+import PaymentForm from '@components/Dynamic/PaymentForm'
+import PaymentSuccess from '@components/Dynamic/PaymentSuccess'
+import Dialog from '@components/Dynamic/Dialog'
+
+const url = new URL(Astro.request.url)
+
+const { success, session_id } = Object.fromEntries(url.searchParams)
+
+if (success === 'true') {
+  Astro.response.headers.set(
+    'Set-Cookie',
+    `session_id=${session_id}; Path=/; Secure; SameSite=None`
+  )
+}
 ---
 
 <Layout title='Test liderazgo' description='Test de liderazgo'>
-  <section class='w-full max-w-screen-md mx-auto py-10'>
+  <section class='w-full max-w-screen-lg mx-auto py-10'>
     <LeadershipTest client:only />
   </section>
   <Dialog id={DIALOGS.paymentForm}>
-    <SendResultsForm client:only />
+    <PaymentForm client:only />
+  </Dialog>
+  <Dialog id={DIALOGS.paymentSuccess} data-open={success} closeButton={false}>
+    <PaymentSuccess client:only />
   </Dialog>
 </Layout>

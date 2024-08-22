@@ -14,16 +14,17 @@ const isLocal = process.env.NODE_ENV === 'development'
 export const POST: APIRoute = async ({ request }) => {
   const data = await request.formData()
   const values = Object.fromEntries(data.entries()) as Record<string, string>
+  const url = new URL(request.url)
 
-  const { name, email, results } = values
+  const { email, results } = values
 
   const html = renderToHtml(JSON.parse(results))
-  const pdfBuffer = await generatePdf(html)
+  const pdfBuffer = await generatePdf(html, url.origin)
 
   await resend.emails.send({
     from: 'Aretopolis <no-replay@aretopolis.com>',
     to: [email],
-    subject: `Resultados de la encuesta de liderazgo: ${name}.`,
+    subject: `Resultados de la encuesta de liderazgo.`,
     text: 'Gracias por participar en nuestra encuesta, aquí tienes tus resultados',
     attachments: [
       {
@@ -42,20 +43,14 @@ export const POST: APIRoute = async ({ request }) => {
   return new Response(JSON.stringify({ message: 'ok' }), {
     status: 200,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Set-Cookie': `session_id=; Max-Age=0; Path=/`
     }
   })
 }
 
-async function generatePdf(htmlContent: string) {
-  await startBrowser()
-
-  // const browser = await await puppeteer.launch({
-  //   args: chromium.args,
-  //   defaultViewport: chromium.defaultViewport,
-  //   executablePath: await chromium.executablePath(),
-  //   headless: chromium.headless
-  // })
+async function generatePdf(htmlContent: string, url: string) {
+  await startBrowser(url)
 
   const page = await browser.newPage()
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' })
@@ -70,7 +65,7 @@ async function generatePdf(htmlContent: string) {
   return Buffer.from(pdfBuffer)
 }
 
-async function startBrowser() {
+async function startBrowser(url: string) {
   const chromeArgs = [
     '--font-render-hinting=none', // Improves font-rendering quality and spacing
     '--no-sandbox',
@@ -91,9 +86,7 @@ async function startBrowser() {
         ? { channel: 'chrome' }
         : {
             args: chromeArgs,
-            executablePath: await chromium.executablePath(
-              `https://github.com/Sparticuz/chromium/releases/download/v123.0.1/chromium-v123.0.1-pack.tar`
-            ),
+            executablePath: await chromium.executablePath(),
             ignoreHTTPSErrors: true,
             headless: true
           })

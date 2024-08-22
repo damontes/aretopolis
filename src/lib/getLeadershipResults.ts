@@ -18,6 +18,32 @@ function getLeadershipResults(
   const totalExpectedAnswers = EXPECTED_ANSWERS[test]
   const totalQuestions = QUESTIONS[test]
 
+  if (partial) {
+    return totalQuestions.reduce((acc, question) => {
+      const answer = answers.find((answer) => answer.id === question.id)
+
+      if (!answer) {
+        throw new Error('Answer not found')
+      }
+
+      const area = Math.floor((question.id - 1) / 10) + 1
+
+      const recommendationForAnswer = recommendationsLiderazgo.questions.find(
+        (recommendedQuestion) => recommendedQuestion.id === answer.id
+      )
+
+      if (!recommendationForAnswer) {
+        throw new Error('Recommendation not found')
+      }
+
+      if (recommendationForAnswer.answer !== answer.value) {
+        acc[area] = (acc[area] ?? 0) + 1
+      }
+
+      return acc
+    }, {} as Record<number, number>)
+  }
+
   const answersBySection = groupBy(totalQuestions, (item) => item.section)
 
   return Object.entries(answersBySection).map(([section, questions]) => {
@@ -47,37 +73,35 @@ function getLeadershipResults(
       percentage,
       recommendations:
         recommendationRange[range as keyof typeof recommendationRange],
-      recommendationsByArea: questions
-        .slice(0, partial ? 3 : questions.length)
-        .reduce((acc, question) => {
-          const answer = answers.find((answer) => answer.id === question.id)
+      recommendationsByArea: questions.reduce((acc, question) => {
+        const answer = answers.find((answer) => answer.id === question.id)
 
-          if (!answer) {
-            throw new Error('Answer not found')
+        if (!answer) {
+          throw new Error('Answer not found')
+        }
+
+        const area = Math.floor((question.id - 1) / 10) + 1
+
+        const recommendationForAnswer = recommendationsLiderazgo.questions.find(
+          (recommendedQuestion) => recommendedQuestion.id === answer.id
+        )
+
+        if (!recommendationForAnswer) {
+          throw new Error('Recommendation not found')
+        }
+
+        if (recommendationForAnswer.answer === answer.value) {
+          if (!acc[area]) {
+            acc[area] = []
           }
 
-          const area = Math.floor((question.id - 1) / 10) + 1
+          acc[area].push(recommendationForAnswer.title)
+        }
 
-          const recommendationForAnswer =
-            recommendationsLiderazgo.questions.find(
-              (recommendedQuestion) => recommendedQuestion.id === answer.id
-            )
-
-          if (!recommendationForAnswer) {
-            throw new Error('Recommendation not found')
-          }
-
-          if (recommendationForAnswer.answer === answer.value) {
-            if (!acc[area]) {
-              acc[area] = []
-            }
-
-            acc[area].push(recommendationForAnswer.title)
-          }
-
-          return acc
-        }, {} as Record<number, string[]>)
+        return acc
+      }, {} as Record<number, string[]>)
     }
   })
 }
+
 export default getLeadershipResults
